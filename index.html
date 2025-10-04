@@ -1,13 +1,14 @@
 <!doctype html>
-<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-<script defer src="https://pyscript.net/latest/pyscript.js"></script>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Guess the Number — Python (PyScript)</title>
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+
+  <!-- PyScript MUST be inside <head> and included only once -->
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
   <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
   <style>
     body { font-family: system-ui, sans-serif; max-width: 650px; margin: 40px auto; line-height: 1.4; }
     .card { border: 1px solid #ddd; border-radius: 12px; padding: 20px; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
@@ -36,7 +37,6 @@
 from js import document
 import random
 
-# elements
 guess_el  = document.getElementById("guess")
 submit_el = document.getElementById("submit")
 reset_el  = document.getElementById("reset")
@@ -44,7 +44,6 @@ feedback  = document.getElementById("feedback")
 warmth    = document.getElementById("warmth")
 history   = document.getElementById("history")
 
-# game state (no break/continue/try)
 secret = 0
 tries = 0
 done = False
@@ -64,34 +63,26 @@ def new_game(event=None):
 
 def on_guess(event=None):
     global tries, done
-
     if done:
-        return  # don't process if game over
+        return
 
-    # read and validate input WITHOUT try/except
     txt = str(guess_el.value).strip()
     if txt == "":
         feedback.textContent = "Please type a number."
         return
-    # only digits? (simple beginner-friendly check)
     if not txt.isdigit():
         feedback.textContent = "Whole numbers only (no letters)."
         return
 
     guess = int(txt)
 
-    # range check
     if guess < 1 or guess > 100:
         feedback.textContent = "Number must be between 1 and 100."
         return
 
-    # valid guess
     tries = tries + 1
-
-    # record history
     history.textContent = ("Guesses: " if history.textContent == "" else history.textContent + ", ") + str(guess)
 
-    # compare
     if guess == secret:
         feedback.textContent = f"✅ Correct! {guess} was the number. Tries: {tries}."
         warmth.textContent = ""
@@ -104,7 +95,6 @@ def on_guess(event=None):
     else:
         feedback.textContent = "Too high!"
 
-    # close/warmer hints (no abs(); do it manually)
     diff = secret - guess
     if diff < 0:
         diff = diff * -1
@@ -116,16 +106,14 @@ def on_guess(event=None):
     else:
         warmth.textContent = "❄️ Freezing cold! Try again."
 
-    # keep cursor ready
     guess_el.select()
 
-# hook events
 submit_el.addEventListener("click", on_guess)
 guess_el.addEventListener("keydown", lambda e: (e.key == "Enter") and on_guess())
 reset_el.addEventListener("click", new_game)
 
-# start
 new_game()
   </py-script>
 </body>
 </html>
+
