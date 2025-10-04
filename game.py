@@ -27,7 +27,7 @@ while done == False:
     print("Too high!")
 
   difference = secret - guess
-  if different < 0:
+  if difference < 0:
     difference = difference * -1
   if difference <= 10 and guess != secret:
     print("You're very close!")
