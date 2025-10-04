@@ -9,11 +9,11 @@ while True:
 
 if guess_text != int:
   print("Please enter a whole number only!")
-  continue
+  
   
 if guess < 1 or guess > 100:
   print("Number must be between 1 and 100!")
-  continue
+  
 
 tries += 1
 
