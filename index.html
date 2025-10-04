@@ -5,16 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Guess the Number — Python (PyScript)</title>
 
-  <!-- PyScript MUST be inside <head> and included only once -->
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <link rel="stylesheet" href="https://pyscript.net/stable/pyscript.css" />
+  <script type="module" src="https://pyscript.net/stable/pyscript.js"></script>
 
   <style>
     body { font-family: system-ui, sans-serif; max-width: 650px; margin: 40px auto; line-height: 1.4; }
     .card { border: 1px solid #ddd; border-radius: 12px; padding: 20px; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
     input, button { font-size: 1rem; padding: 8px 12px; }
     input { width: 140px; }
-    #feedback b { display:inline-block; min-width: 5.5em; }
     .muted { color: #666; }
   </style>
 </head>
@@ -32,7 +30,11 @@
     <p id="history" class="muted"></p>
   </div>
 
-  <!-- Python code runs in the browser with PyScript -->
+  <!-- Helps some setups; safe to include -->
+  <py-config>
+    packages = []
+  </py-config>
+
   <py-script>
 from js import document
 import random
@@ -116,4 +118,3 @@ new_game()
   </py-script>
 </body>
 </html>
-
