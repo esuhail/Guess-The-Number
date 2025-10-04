@@ -3,17 +3,51 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PyScript Test</title>
+  <title>Guess the Number — Python (PyScript)</title>
 
-  <!-- Use stable version of PyScript -->
+  <!-- Working PyScript setup -->
   <link rel="stylesheet" href="https://pyscript.net/stable/pyscript.css" />
   <script type="module" src="https://pyscript.net/stable/pyscript.js"></script>
+
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 650px; margin: 40px auto; line-height: 1.4; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 20px; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+    input, button { font-size: 1rem; padding: 8px 12px; }
+    input { width: 140px; }
+    .muted { color: #666; }
+  </style>
 </head>
 <body>
-  <h1>PyScript is working if you see the message below 👇</h1>
+  <h1>Guess the Number (1–100) — Python</h1>
+  <div class="card">
+    <p class="muted">I picked a secret number. Can you guess it?</p>
+
+    <input id="guess" type="number" min="1" max="100" placeholder="Your guess" />
+    <button id="submit" type="button">Guess</button>
+    <button id="reset" type="button" style="display:none;">Play again</button>
+
+    <p id="feedback"></p>
+    <p id="warmth" class="muted"></p>
+    <p id="history" class="muted"></p>
+  </div>
+
+  <py-config>
+    packages = []
+  </py-config>
 
   <py-script>
-print("✅ Hello from Python running in your browser!")
-  </py-script>
-</body>
-</html>
+from js import document
+import random
+
+guess_el  = document.getElementById("guess")
+submit_el = document.getElementById("submit")
+reset_el  = document.getElementById("reset")
+feedback  = document.getElementById("feedback")
+warmth    = document.getElementById("warmth")
+history   = document.getElementById("history")
+
+secret = 0
+tries = 0
+done = False
+
+def new_game(event=N_
