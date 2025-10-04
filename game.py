@@ -19,8 +19,6 @@ tries += 1
 
 if guess == secret:
   print(f" Correct! {guess} was the number. It took you {tries} tries.")
-  break
-
 elif guess < secret:
   print("Too low!")
 else:
