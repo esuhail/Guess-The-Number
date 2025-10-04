@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Guess the Number — Python (PyScript)</title>
 
-  <!-- Working PyScript setup -->
+  <!-- PyScript (stable) -->
   <link rel="stylesheet" href="https://pyscript.net/stable/pyscript.css" />
   <script type="module" src="https://pyscript.net/stable/pyscript.js"></script>
 
@@ -31,10 +31,6 @@
     <p id="history" class="muted"></p>
   </div>
 
-  <py-config>
-    packages = []
-  </py-config>
-
   <py-script>
 from js import document
 import random
@@ -50,4 +46,71 @@ secret = 0
 tries = 0
 done = False
 
-def new_game(event=N_
+def new_game(event=None):
+    global secret, tries, done
+    secret = random.randint(1, 100)
+    tries = 0
+    done = False
+    feedback.textContent = ""
+    warmth.textContent = ""
+    history.textContent = ""
+    guess_el.value = ""
+    submit_el.style.display = ""
+    reset_el.style.display = "none"
+    guess_el.focus()
+
+def on_guess(event=None):
+    global tries, done
+    if done:
+        return
+
+    txt = str(guess_el.value).strip()
+    if txt == "":
+        feedback.textContent = "Please type a number."
+        return
+    if not txt.isdigit():
+        feedback.textContent = "Whole numbers only (no letters)."
+        return
+
+    guess = int(txt)
+
+    if guess < 1 or guess > 100:
+        feedback.textContent = "Number must be between 1 and 100."
+        return
+
+    tries += 1
+    history.textContent = ("Guesses: " if history.textContent == "" else history.textContent + ", ") + str(guess)
+
+    if guess == secret:
+        feedback.textContent = f"✅ Correct! {guess} was the number. Tries: {tries}."
+        warmth.textContent = ""
+        done = True
+        submit_el.style.display = "none"
+        reset_el.style.display = ""
+        return
+    elif guess < secret:
+        feedback.textContent = "Too low!"
+    else:
+        feedback.textContent = "Too high!"
+
+    diff = secret - guess
+    if diff < 0:
+        diff = -diff
+
+    if diff <= 10:
+        warmth.textContent = "🔥 You're very close!"
+    elif diff <= 25:
+        warmth.textContent = "🌡️ You're getting warmer."
+    else:
+        warmth.textContent = "❄️ Freezing cold! Try again."
+
+    guess_el.select()
+
+submit_el.addEventListener("click", on_guess)
+guess_el.addEventListener("keydown", lambda e: (e.key == "Enter") and on_guess())
+reset_el.addEventListener("click", new_game)
+
+new_game()
+  </py-script>
+</body>
+</html>
